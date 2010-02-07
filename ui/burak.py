@@ -1,6 +1,4 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-3 + 4
-barandan sevgilerle
-
+print "barandan sevgilerle artık bişiler yollayın olmuyo böle"
