@@ -11,6 +11,10 @@ import sys
 sys.path.append('./formats/')
 import formats
 
+#-- Configs
+sys.path.append('./config/')
+import config
+
 
 class Instant_Adjustment:
     def __init__(self):
