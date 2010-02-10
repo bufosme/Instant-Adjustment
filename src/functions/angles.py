@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-logfile = open("angles", "r").readlines()
+logfile = open("../../formats/angles", "r").readlines()
 durulan_nokta = []
 bakilan_nokta = []
 lines = []

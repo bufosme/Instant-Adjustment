@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-logfile = open("pol_datas", "r").readlines()
+logfile = open("../../formats/pol_datas", "r").readlines()
 points = []
 lines = []
 words = []
