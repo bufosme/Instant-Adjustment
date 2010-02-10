@@ -7,6 +7,10 @@ points = []
 lines = []
 words = []
 counter = 0
+h_lenghts = []
+h_angels = []
+y_coordinates = []
+x_coordinates = []
 
 for content in logfile:
     for line in content.split("<br>"):
@@ -15,8 +19,17 @@ for content in logfile:
 while counter < len(lines):
     word = lines[counter].split("/")
     counter+=1
-    print "Nokta No:", word[0]
+    points.append(word[0])
+    h_angels.append(word[1])
+    h_lenghts.append(word[2])
+    y_coordinates.append(word[3])
+    x_coordinates.append(word[4])
 
+print points
+print h_lenghts
+print h_angels
+print y_coordinates
+print x_coordinates
 
 
 
