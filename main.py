@@ -8,12 +8,10 @@
 import sys
 
 #-- Formats
-sys.path.append('./formats/')
-import formats
+from formats import formats
 
 #-- Configs
-sys.path.append('./config/')
-import config
+from config import config
 
 
 class Instant_Adjustment:
