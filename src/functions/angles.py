@@ -1,61 +1,84 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-logfile = open("../../formats/angles", "r").readlines()
-durulan_nokta = []
-bakilan_nokta = []
-lines = []
-counter = 0
-h_angles_1 = []
-v_angles_1 = []
-h_angles_2  = []
-v_angles_2 = []
-
-for content in logfile:
-    for line in content.split("<br>"):
-        if line[0] != "#":
-            lines.append(line)
-
-while counter < len(lines):
-    word = lines[counter].split("/")
-    counter+=1
-    if word[0] != "#":
-        durulan_nokta.append(word[0])
-        bakilan_nokta.append(word[1])
-        h_angles_1.append(word[2])
-        h_angles_2.append(word[3])
-        v_angles_1.append(word[4])
-        v_angles_2.append(word[5])
-    
- 
 
 
 
-def zenit():
-    i=0
-    while i < len(lines):
-        zenit = float(v_angles_1[i]) + ((400 - (float( v_angles_1[i])+float(v_angles_2[i] )))/2)
-        i+=1
-        if v_angles_1[i] == "":
-            exit()
-    print "[Debug] Zenit calculated successfully"
+class Angles:
+    def __init__(self):
+        self.logfile = open("../../formats/angles", "r").readlines()
+        self.durulan_nokta = []
+        self.bakilan_nokta = []
+        self.counter = 0
+        self.horizons = []
+        self.h_angles_1 = []
+        self.v_angles_1 = []
+        self.zenits = []
+        self.h_angles_2  = []
+        self.v_angles_2 = []
+        self.counter = 0
+        
+        self.line_seperator(self.logfile)
 
 
-def horizontal_angle():
-    i=0
-    while i < len(lines):
-        if float(h_angles_1[i]) + float(h_angles_2[i]) < 200:
-            horizon = 400 + (float(h_angles_1[i]) + float(h_angles_2[i])-200)/2
-        else:
-            horizon = (float(h_angles_1[i]) + float(h_angles_2[i])-200)/2
-        print horizon 
-        i+=1
-    print "[Debug] Horizontal angles calculated successfully"
+    def line_seperator(self, logfile):
+        lines = []
+        for content in logfile:
+            for line in content.split("<br>"):
+                if line[0] != "#":
+                    lines.append(line)
+        self.appendings(lines)
 
+    def appendings(self, lines):
+        counter = 0
+        while counter < len(lines):
+            word = lines[counter].split("/")
+            counter+=1
+            if word[0] != "#":
+                self.durulan_nokta.append(word[0])
+                self.bakilan_nokta.append(word[1])
+                self.h_angles_1.append(word[2])
+                self.h_angles_2.append(word[3])
+                self.v_angles_1.append(word[4])
+                self.v_angles_2.append(word[5])
+        self.zenit(lines)
+        self.horizontal_angle(lines)
+        self.write(lines, self.zenits, self.horizons)
 
-def get_serial_count():
-    return
+    def zenit(self, lines):
+        i=0
+        while i < len(lines):
+            zenit = float(self.v_angles_1[i]) + ((400 - (float(self.v_angles_1[i])+float(self.v_angles_2[i] )))/2)
+            self.zenits.append(zenit)
+            i+=1
+            if self.v_angles_1[i] == "":
+                break
 
-b = horizontal_angle()
+    def horizontal_angle(self, lines):
+        i=0
+        while i < len(lines):
+            if float(self.h_angles_1[i]) + float(self.h_angles_2[i]) < 200:
+                horizon = 400 + (float(self.h_angles_1[i]) + float(self.h_angles_2[i])-200)/2
+                self.horizons.append(horizon)
+            else:
+                horizon = (float(self.h_angles_1[i]) + float(self.h_angles_2[i])-200)/2
+                self.horizons.append(horizon)
+            i+=1
 
+    def write(self, lines, zenits, horizons):
+        file = open('../../tmp/angles', 'w')
+        i=0
+        while i < len(lines):
+            if self.zenits[i]:
+                print "var"
+                sta_zenit = self.zenits[i]
+            else:
+                print "yok"
+                sta_zenit = "-"
+            #line = 'DN: %s BN: %s Zenit: %s Horizon: %s \n' % (self.durulan_nokta[i], self.bakilan_nokta[i], sta_zenit, self.horizons[i])
+            #file.write(line)
+            i+=1
+        file.close()
 
+if __name__ == "__main__":
+    instant = Angles()
