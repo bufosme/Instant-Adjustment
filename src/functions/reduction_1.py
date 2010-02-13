@@ -9,17 +9,17 @@ class reduction:
         self.bakilan_nokta = []
         self.a = []
         self.r = []
-        self.D.N_H = []
-        self.B.N_H = []
-        self.D.N_Y = []
-        self.B.N_Y = []
+        self.D_N_H = []
+        self.B_N_H = []
+        self.D_N_Y = []
+        self.B_N_Y = []
         self.p = []
         self.t = []
         self.t_wet = []
         self.slope_dist= []
         self.counter = 0
-
-        self.line_seperator(self.logfile)
+        
+        
 
     def line_seperator(self, logfile):
         lines = []
@@ -27,7 +27,7 @@ class reduction:
             for line in content.split("<br>"):
                 if line[0] != "#":
                     lines.append(line)
-        self.appendings(lines)
+    
 
     def appendings(self, lines):
         counter = 0
@@ -39,15 +39,15 @@ class reduction:
                 self.bakilan_nokta.append(word[1])
                 self.a.append(word[2])
                 self.r.append(word[3])
-                self.D.N_H.append(word[4])
-                self.B.N_H.append(word[5])
-                self.D.N_Y.append(word[6])
-                self.B.N_Y.append(word[7])
+                self.D_N_H.append(word[4])
+                self.B_N_H.append(word[5])
+                self.D_N_Y.append(word[6])
+                self.B_N_Y.append(word[7])
                 self.p.append(word[8])
                 self.t.append(word[9])
                 self.t_wet.append(word[10])
                 self.slope_dist(word[11])
-        self.reduction(lines)
+ 
 
 
     def reduction(self, lines):
@@ -64,12 +64,13 @@ class reduction:
             #K1=hız düzeltmesi
             K2=float(self.slope_dist[i])+K1
             #K2=Düzeltilme getirilmiş eğik uzunluk
-            K3=K2-((pow((float(self.B.N_Y[i])+float(self.r[i]))-(float(self.D.N_Y[i])+float(self.a[i]),2)))/(2*K2))
+            K3=K2-((pow((float(self.B_N_Y[i])+float(self.r[i]))-(float(self.D_N_Y[i])+float(self.a[i]),2)))/(2*K2))
             #K3=yatay uzunluk
             self.reduction.append(reduction)
             i+=1
+     
 
 if __name__ == "__main__":
     a = reduction()
 
- 
+
