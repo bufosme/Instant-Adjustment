@@ -1,9 +1,28 @@
 INSTANT ADJUSTMENT PROJECT
 **************************
 
+Kabuller
+    * Açılar grad olarak alındı.
+    * Düşey açılar zenit olarak alındı.
+    * h_angels = yatay açı ( grad)
+    * v_angels = düşey açı(başucu açısı-grad)
+    * D_N_H = durulan nokta yuksekliği(metre)
+    * B_N_H = bakılan nokta yuksekliği(metre)
+    * D_N_Y = durulan nokta y koordinatı(metre)
+    * B_N_Y = bakılan nokta y koordinatı(metre)
+    * a = alet yükekliği(metre)
+    * r = reflektör yüksekliği(metre)
+    * p = basınç (mm Hg )
+    * t = kuru sıcaklık (derece)
+    * t_wet = ıslak sıcaklık (derece)
+    * slope_dist = eğik uzunluk (metre)
+    * e1= doymus su buhar basıncı (mm Hg)
+    * e2= kısmi su buhar basıncı (mm Hg)
+    * n = ortamın kırılma indisi(birimsiz)
+    * K1 = hız düzeltmesi(metre)
+    * K2 = düzeltme getirilmiş eğik uzunluk(metre)
+    * K2 yeniden isimlendirilecektir!!!
+    *
 
-ve mehmet gite başlar...
-ve gene patlarız tabiki..
-ve gene patlarız tabiki..
-ve gene patlarız tabiki..
+
 
