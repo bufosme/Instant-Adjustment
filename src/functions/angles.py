@@ -58,11 +58,13 @@ class Angles:
             if float(self.h_angles_1[i]) + float(self.h_angles_2[i]) < 200:
                 horizon = 400 + (float(self.h_angles_1[i]) + float(self.h_angles_2[i])-200)/2
                 self.horizons.append(horizon)
+            elif float(self.h_angles_1[i]) >  float(self.h_angles_2[i]):
+                horizon = (float(self.h_angles_1[i]) + float(self.h_angles_2[i])+200)/2
             else:
                 horizon = (float(self.h_angles_1[i]) + float(self.h_angles_2[i])-200)/2
                 self.horizons.append(horizon)
             i+=1
-
+            print horizon 
     def write(self, lines, zenits, horizons):
         file = open('../../tmp/angles', 'w')
         i=0
