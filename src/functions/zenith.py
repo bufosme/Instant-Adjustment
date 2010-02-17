@@ -1,23 +1,18 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-
-class Angles:
+class Zenith:
     def __init__(self):
         self.logfile = open("../../formats/angles", "r").readlines()
         self.durulan_nokta = []
         self.bakilan_nokta = []
         self.counter = 0
-        self.horizons = []
-        self.h_angles_1 = []
         self.v_angles_1 = []
-        self.zenits = []
-        self.h_angles_2  = []
+        self.zeniths = []
         self.v_angles_2 = []
         self.counter = 0
         self.horizons = [] 
         self.line_seperator(self.logfile)
-
 
     def line_seperator(self, logfile):
         lines = []
@@ -35,48 +30,43 @@ class Angles:
             if word[0] != "#":
                 self.durulan_nokta.append(word[0])
                 self.bakilan_nokta.append(word[1])
-                self.h_angles_1.append(word[2])
-                self.h_angles_2.append(word[3])
                 self.v_angles_1.append(word[4])
                 self.v_angles_2.append(word[5])
-        self.zenit(lines)
-        self.horizontal_angle(lines)
-        self.write(lines, self.zenits, self.horizons)
+        self.cal_zenith(lines)
+        self.write(lines, self.zeniths)
 
-    def zenit(self, lines):
+    def cal_zenith(self, lines):
         i=0
         while i < len(lines):
             zenit = float(self.v_angles_1[i]) + ((400 - (float(self.v_angles_1[i])+float(self.v_angles_2[i] )))/2)
-            self.zenits.append(zenit)
+            self.zeniths.append(zenit)
             i+=1
             if self.v_angles_1[i] == "":
                 break
 
-    def horizontal_angle(self, lines):
+    def write(self, lines, zeniths):
+        file = open('../../tmp/zeniths', 'w')
         i=0
-        while i < len(lines):
-            if float(self.h_angles_1[i]) + float(self.h_angles_2[i]) < 200:
-                horizon = 400 + (float(self.h_angles_1[i]) + float(self.h_angles_2[i])-200)/2
-                self.horizons.append(horizon)
+        line_count = len(lines)/2 #
+        self.serial_count("101", lines)
+        while i < line_count:
+            if self.zeniths[i]:
+                sta_zenit = self.zeniths[i]
             else:
-                horizon = (float(self.h_angles_1[i]) + float(self.h_angles_2[i])-200)/2
-                self.horizons.append(horizon)
-            i+=1
-
-    def write(self, lines, zenits, horizons):
-        file = open('../../tmp/angles', 'w')
-        i=0
-        while i < len(lines):
-            if self.zenits[i]:
-                print "var"
-                sta_zenit = self.zenits[i]
-            else:
-                print "yok"
                 sta_zenit = "-"
-            line = 'DN: %s BN: %s Zenit: %s Horizon: %s \n' % (self.durulan_nokta[i], self.bakilan_nokta[i], sta_zenit, self.horizons[i])
+            line = 'DN: %s BN: %s Zenit: %s \n' % (self.durulan_nokta[i], self.bakilan_nokta[i], sta_zenit)
             file.write(line)
             i+=1
         file.close()
 
+
+    def serial_count(self, durulan_nokta, lines):
+        counter = 0
+        while counter < len(lines):
+            word = lines[counter].split("/")
+            counter+=1
+            if durulan_nokta == word[0]:
+                print word[1], self.bakilan_nokta.count(word[1])
+
 if __name__ == "__main__":
-    instant = Angles()
+    instant = Zenith()
