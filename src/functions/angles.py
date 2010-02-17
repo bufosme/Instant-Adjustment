@@ -17,7 +17,7 @@ class Angles:
         self.h_angles_2  = []
         self.v_angles_2 = []
         self.counter = 0
-        
+        self.horizons = [] 
         self.line_seperator(self.logfile)
 
 
