@@ -14,6 +14,9 @@ class Horizontal_Angles:
         self.h_angles_2  = []
         self.horizontal_points_bn = []
         self.horizontal_points_dn = []
+        self.dnbn = []
+        self.angles = []
+        # Herşey bu satırın üstünde olmalı dikkat...!
         self.line_seperator(self.logfile)
 
 
@@ -52,39 +55,65 @@ class Horizontal_Angles:
             self.horizontal_points_dn.append(self.durulan_nokta[i])
             i+=1
         print self.horizons
-        print self.horizontal_points_bn
         print self.horizontal_points_dn
+        print self.horizontal_points_bn
 
     def write(self, lines, horizons):
         #print self.horizontal_points_dn, self.horizontal_points_bn, .horizons
         file = open('../../tmp/horizons', 'w')
         i=0
         line_count = len(horizons)
+        beta = self.serial_count("101", "102", "103", horizons)
+        print "Beta: ", beta
+        #beta = self.beta("101", "102", "103", horizons, count)
         while i < line_count:
-            #print self.serial_count(self.horizontal_points_dn[i], self.horizontal_points_bn[i], self.horizons)
-            horizontal = self.horizontal(self.horizontal_points_dn[i], self.horizontal_points_bn[i], self.horizons)/self.serial_count(self.horizontal_points_dn[i], self.horizontal_points_bn[i], self.horizons)
-            line = 'NN: %s Horizontal: %s \n' % (self.horizontal_points_dn[i], horizontal)
+            #line = 'NN: %s Horizontal: %s \n' % (self.horizontal_points_dn[i], horizontal)
             #print line
-            file.write(line)
+            #file.write(line)
             i+=1
+        #print self.dnbn
         file.close()
 
 
-    def serial_count(self, durulan_nokta, bakilan_nokta, horizons):
+    def serial_count(self, durulan_nokta, bakilan_nokta, bakilan_nokta_2, horizons):
+        i = 0
+        j = 0
         counter = 0
-        serial = 0
-        while counter < len(horizons):
-            if self.horizontal_points_bn[counter] == bakilan_nokta and self.horizontal_points_dn[counter] == durulan_nokta:
-                serial+=1
-            counter+=1
-        return serial
+        a = 0
+        k = 0
+        while i < len(self.horizontal_points_dn):
+            if self.horizontal_points_dn[i] == durulan_nokta:
+                while j < len(self.horizontal_points_bn):
+                    if  self.horizontal_points_bn[j] == bakilan_nokta:
+                        if self.horizontal_points_bn[j+1] == bakilan_nokta_2:
+                            counter+=1
+                            print "Dn:", self.horizontal_points_dn[i]
+                            print "BN1:", self.horizontal_points_bn[j]
+                            print "BN2:", self.horizontal_points_bn[j+1]
+                            cal = horizons[j+1] - horizons[j]
+                            #print cal
+                            self.angles.append(cal)
+                    j+=1
+            i+=1
+        while k < len(self.angles):
+            a += self.angles[k]
+            k +=1
+        return a/counter
+
+        #return self.angles
+
+    #def beta(self, durulan_nokta, bakilan_nokta, bakilan_nokta_2, horizons, count):
+    #    i=0
+    #    while i < len (self.horizons):
+    #        a= float(self.horizons[i+1])-float(self.horizons[i])
+    #        i+=3
 
     def horizontal(self, durulan_nokta, bakilan_nokta, horizons):
         counter = 0
         horizontal = 0
         print "---"
         while counter < len(horizons):
-            print self.horizontal_points_dn[counter], self.horizontal_points_bn[counter], self.horizons[counter]
+            #print self.horizontal_points_dn[counter], self.horizontal_points_bn[counter], self.horizons[counter]
             counter+=1
         return horizontal
 
