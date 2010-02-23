@@ -71,6 +71,7 @@ class Zenith:
             if self.zeniths_points_bn[counter] == bakilan_nokta and self.zeniths_points_dn[counter] == durulan_nokta:
                 serial+=1
             counter+=1
+        print serial
         return serial
 
     def zenit(self, durulan_nokta, bakilan_nokta, zeniths):
