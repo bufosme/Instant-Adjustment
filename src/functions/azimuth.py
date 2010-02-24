@@ -21,6 +21,9 @@ class azimuth:
                 if line[0] != "#":
                     lines.append(line)
         self.appendings(lines)
+        self.azimut(lines)
+        self.write(lines,self.azimut_values)
+        
 
     def appendings(self, lines):
         counter = 0
@@ -31,16 +34,20 @@ class azimuth:
                 self.nokta_numarasi.append(word[0])
                 self.y.append(float(word[1]))
                 self.x.append(float(word[2]))
-        self.azimut(lines)
+        
+            
 
 
     def azimut(self, lines):
         
         i=0
         while i <len(lines):
-            if i+1 < len(lines) 
+            if i  == float( len(lines)-1):
+                break
+            else:
+
                 a=(atan2(abs(self.y[i+1]-self.y[i]),abs(self.x[i+1]-self.x[i])))*200/pi
-            # a: açıklık açısı
+                # a: açıklık açısı
                 if (self.y[i+1]-self.y[i])>0 and (self.x[i+1]-self.x[i])>0:
                     a = a
                 elif (self.y[i+1]-self.y[i])>0 and (self.x[i+1]-self.x[i])<0:
@@ -49,9 +56,10 @@ class azimuth:
                     a = 200 + a
                 elif (self.y[i+1]-self.y[i])<0 and (self.x[i+1]-self.x[i])>0:
                     a = 400 - a
+                print a
                 self.azimut_values.append(a)
                 i+=1
-            self.write(lines , self.azimut_values)
+        
 
 
     def write(self, lines, azimut_values):
