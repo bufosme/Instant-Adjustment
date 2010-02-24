@@ -11,9 +11,9 @@ class azimuth:
         self.y = []
         self.x = []
         self.counter = 0
+        self.azimut_values = []
         self.line_seperator(self.logfile)
-        self.azimut_values= []
-    
+  
     def line_seperator(self, logfile):
         lines = []
         for content in logfile:
@@ -38,19 +38,32 @@ class azimuth:
         
         i=0
         while i <len(lines):
-            a=(atan2(abs(self.y[i+1]-self.y[i]),abs(self.x[i+1]-self.x[i])))*200/pi
+            if i+1 < len(lines) 
+                a=(atan2(abs(self.y[i+1]-self.y[i]),abs(self.x[i+1]-self.x[i])))*200/pi
             # a: açıklık açısı
-            if (self.y[i+1]-self.y[i])>0 and (self.x[i+1]-self.x[i])>0:
-                a = a
-            elif (self.y[i+1]-self.y[i])>0 and (self.x[i+1]-self.x[i])<0:
-                a = 200 - a
-            elif (self.y[i+1]-self.y[i])<0 and (self.x[i+1]-self.x[i])<0:
-                a = 200 + a
-            elif (self.y[i+1]-self.y[i])<0 and (self.x[i+1]-self.x[i])>0:
-                a = 400 - a
+                if (self.y[i+1]-self.y[i])>0 and (self.x[i+1]-self.x[i])>0:
+                    a = a
+                elif (self.y[i+1]-self.y[i])>0 and (self.x[i+1]-self.x[i])<0:
+                    a = 200 - a
+                elif (self.y[i+1]-self.y[i])<0 and (self.x[i+1]-self.x[i])<0:
+                    a = 200 + a
+                elif (self.y[i+1]-self.y[i])<0 and (self.x[i+1]-self.x[i])>0:
+                    a = 400 - a
+                self.azimut_values.append(a)
+                i+=1
+            self.write(lines , self.azimut_values)
+
+
+    def write(self, lines, azimut_values):
+        file = open('../../tmp/azimuth', 'w')
+        i=0
+        while i < len(lines):
+            line = '%s/%s/%s\n' % (self.nokta_numarasi[i], self.nokta_numarasi[i+1], azimut_values[i])
+            print line
+            file.write(line)
             i+=1
-            print a
-            
+        file.close()
+ 
             
 if __name__=="__main__":
     c = azimuth()
