@@ -16,6 +16,7 @@ class Horizontal_Angles:
         self.horizontal_points_dn = []
         self.dnbn = []
         self.angles = []
+        self.keys = []
         # Herşey bu satırın üstünde olmalı dikkat...!
         self.line_seperator(self.logfile)
 
@@ -39,7 +40,7 @@ class Horizontal_Angles:
                 self.h_angles_1.append(word[2])
                 self.h_angles_2.append(word[3])
         self.cal_horizontal(lines)
-        self.write(lines, self.horizons)
+        self.keylist(lines, self.horizons)
 
     def cal_horizontal(self, lines):
         i=0
@@ -54,29 +55,35 @@ class Horizontal_Angles:
             self.horizontal_points_bn.append(self.bakilan_nokta[i])
             self.horizontal_points_dn.append(self.durulan_nokta[i])
             i+=1
-        #print self.horizons
-        #print self.horizontal_points_dn
-        #print self.horizontal_points_bn
 
-    def write(self, lines, horizons):
-        #print self.horizontal_points_dn, self.horizontal_points_bn, .horizons
-        file = open('../../tmp/horizons', 'w')
+    def keylist(self, lines, horizons):
         i=0
         j=0
         while i < len(self.horizontal_points_dn):
-                while j < len(self.horizontal_points_bn):
-                    beta = self.serial_count(self.horizontal_points_dn[i], self.horizontal_points_bn[j], self.horizontal_points_bn[j+1], horizons)
-                    line = 'DN: %s Bn: %s Bn2: %s Beta: %s' % (self.horizontal_points_dn[i], self.horizontal_points_bn[j], self.horizontal_points_bn[j+1], beta)
-                    print line
+            while j < len(self.horizontal_points_bn):
+                if i >= float( len(lines)-1):
+                    print "-----------"
+                    j+=2
                     i+=2
-                    i=j
-                    
-        #while i < line_count:
-            #line = 'NN: %s Horizontal: %s \n' % (self.horizontal_points_dn[i], horizontal)
-            #print line
-            #file.write(line)
-        #print self.dnbn
-        file.close()
+                    break
+                else:
+                    key = self.horizontal_points_dn[i]+self.horizontal_points_bn[j]+self.horizontal_points_bn[j+1]
+                    print key
+                    if not key in self.keys:
+                        self.keys.append(key)
+                        print "^^^^^^^^^^^^"
+                        print "i:", i
+                        print "j:", j
+                        beta = self.serial_count(self.horizontal_points_dn[i], self.horizontal_points_bn[j], self.horizontal_points_bn[j+1], horizons)
+                        line = 'DN: %s Bn: %s Bn2: %s Beta: %s' % (self.horizontal_points_dn[i], self.horizontal_points_bn[j], self.horizontal_points_bn[j+1], beta)
+                        print line
+                    j+=2
+                    i+=2
+
+                print self.keys
+
+
+
 
 
     def serial_count(self, durulan_nokta, bakilan_nokta, bakilan_nokta_2, horizons):
