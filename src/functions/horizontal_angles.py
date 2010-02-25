@@ -57,30 +57,26 @@ class Horizontal_Angles:
             i+=1
 
     def keylist(self, lines, horizons):
+        file = open('../../tmp/horizons', 'w')
         i=0
         j=0
         while i < len(self.horizontal_points_dn):
             while j < len(self.horizontal_points_bn):
                 if i >= float( len(lines)-1):
-                    print "-----------"
                     j+=2
                     i+=2
                     break
                 else:
                     key = self.horizontal_points_dn[i]+self.horizontal_points_bn[j]+self.horizontal_points_bn[j+1]
-                    print key
                     if not key in self.keys:
                         self.keys.append(key)
-                        print "^^^^^^^^^^^^"
-                        print "i:", i
-                        print "j:", j
                         beta = self.serial_count(self.horizontal_points_dn[i], self.horizontal_points_bn[j], self.horizontal_points_bn[j+1], horizons)
-                        line = 'DN: %s Bn: %s Bn2: %s Beta: %s' % (self.horizontal_points_dn[i], self.horizontal_points_bn[j], self.horizontal_points_bn[j+1], beta)
-                        print line
+                        line = '%s/%s/%s/%s' % (self.horizontal_points_dn[i], self.horizontal_points_bn[j], self.horizontal_points_bn[j+1], beta)
+                        file.write(line)
                     j+=2
                     i+=2
 
-                print self.keys
+        file.close()
 
 
 
