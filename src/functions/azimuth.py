@@ -66,10 +66,13 @@ class azimuth:
         file = open('../../tmp/azimuth', 'w')
         i=0
         while i < len(lines):
-            line = '%s/%s/%s\n' % (self.nokta_numarasi[i], self.nokta_numarasi[i+1], azimut_values[i])
-            print line
-            file.write(line)
-            i+=1
+            if i  == float( len(lines)-1):
+                break
+            else:
+                line = '%s/%s/%s\n' % (self.nokta_numarasi[i], self.nokta_numarasi[i+1], azimut_values[i])
+                print line
+                file.write(line)
+                i+=1
         file.close()
  
             
