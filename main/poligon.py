@@ -6,9 +6,9 @@ class poligon:
 
 
     def __init__(self):
-        self.azimuth_log  = open("../tmp/azimuth_2","r").readlines()
-        self.reductions_log = open("../tmp/reduction_2","r").readlines()
-        self.horizons_log = open("../tmp/horizons_2","r").readlines()
+        self.azimuth_log  = open("../tmp/azimuth_1","r").readlines()
+        self.reductions_log = open("../tmp/reduction_1","r").readlines()
+        self.horizons_log = open("../tmp/horizons_1","r").readlines()
         self.y_bilinen = []
         self.x_bilinen = []
         self.y_bilinmeyen = []
@@ -22,8 +22,8 @@ class poligon:
         self.duz_delta_x = []
         self.DN = []
         self.BN = []
-        self.type = 1 # Poligon tipi (bağlı)
-        #self.type = 2 # Poligon tipi (kapalı)
+        #self.type = 1 # Poligon tipi (bağlı)
+        self.type = 2 # Poligon tipi (kapalı)
         self.BN2 = []
         self.aciklik_acisi = []
         self.horizons = []
@@ -94,16 +94,20 @@ class poligon:
         #fb : Açı kapanma hatası
         #FB : Açı kapanma hata sınırı
         i = 0
-        if type == 1:
-            total_beta = sum(self.horizons)
+        total_beta = sum(self.horizons)
+        FB = 0.0015 * sqrt(len(self.horizons))
+
+        if self.type == 1:
             fb = self.aciklik_acisi[0] - self.aciklik_acisi[-1] + total_beta - len(self.horizons) * 200
-            FB = 0.0015 * sqrt(len(self.horizons))
-            if fb >= FB:
-                self.control("[CONTROL:] Acı Kapanma Hatası Oluştu..")
-            while i < len(self.horizons):
-                duz_horizons = self.horizons[i] - fb/len(self.horizons)
-                self.duz_horizons.append(duz_horizons)
-                i+=1
+        elif self.type == 2:
+            fb = total_beta - (len(self.horizons) - 2)*200
+
+        if fb >= FB:
+            self.control("[CONTROL:] Acı Kapanma Hatası Oluştu..")
+        while i < len(self.horizons):
+            duz_horizons = self.horizons[i] - fb/len(self.horizons)
+            self.duz_horizons.append(duz_horizons)
+            i+=1
 
 
 
@@ -149,11 +153,15 @@ class poligon:
     def coord_control(self, delta_y, delta_x, y_bilinen, x_bilinen):
         global fy, fx, fq, fl, FQ, FL
         i = 0
-
         s = sqrt(pow(sum(self.delta_y),2) + pow(sum(self.delta_x),2))
+        if self.type == 1:
 
-        fy = (self.y_bilinen[-2] - self.y_bilinen[1]) - sum(self.delta_y)
-        fx = (self.x_bilinen[-2] - self.x_bilinen[1]) - sum(self.delta_x)
+            fy = (self.y_bilinen[-2] - self.y_bilinen[1]) - sum(self.delta_y)
+            fx = (self.x_bilinen[-2] - self.x_bilinen[1]) - sum(self.delta_x)
+
+        elif self.type == 2:
+            fy = sum(self.delta_y) * -1
+            fx = sum(self.delta_x) * -1
 
         fq = (1/s) * (fy * sum(self.delta_x) - fx * sum(self.delta_y))
         fl = (1/s) * (fy * sum(self.delta_y) + fx * sum(self.delta_x))
@@ -203,21 +211,21 @@ class poligon:
         print "Enine kapanma hatası (fq) = %.4f" % (fq)
         print "Enine kapanma hata sınırı (FQ) = %.4f\n" % (FQ)
 
-
         print "Boyuna kapanma hatası (fl) = %.4f" % (fl)
         print "Boyuna kapanma hata sınırı (FL) = %.4f\n" % (FL)
+
 
         j = 0
         i = 0
 
         while j < len(self.kenar):
-            print "DN = %s  BN = %s  Kenar = %s  Açıklık açısı = %.4f" % (self.DN[j], self.BN2[j], self.kenar[j], self.azimuth[j])
+            print "DN = %s  BN = %s  Kenar = %s  Açıklık açısı = %.4f  DeltaY = %.3f  DeltaX = %.3f  DüzDeltaY = %.3f  DüzDeltaX = %.3f" % (self.DN[j], self.BN2[j], self.kenar[j], self.azimuth[j], self.delta_y[j], self.delta_x[j], self.duz_delta_y[j], self.duz_delta_x[j])
             j+=1
 
         print "\n"
 
-        while i < len(self.delta_y):
-            print "NN = %s  DeltaY = %.3f  DeltaX = %.3f  DüzDeltaY = %.3f  DüzDeltaX = %.3f  Y = %.3f  X = %.3f" % (self.DN[i+1], self.delta_y[i], self.delta_x[i], self.duz_delta_y[i], self.duz_delta_x[i], self.y_bilinmeyen[i], self.x_bilinmeyen[i])
+        while i < len(self.delta_x):
+            print "NN = %s  Y = %.3f  X = %.3f" % (self.BN2[i], self.y_bilinmeyen[i], self.x_bilinmeyen[i])
             i+=1
 
 
