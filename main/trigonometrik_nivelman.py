@@ -44,6 +44,7 @@ class trigonometrik_niv:
             counter+=1
 
 
+
     def seperator_kot(self,kot_log):
         kot_lines = []
         for content in kot_log:
@@ -59,12 +60,25 @@ class trigonometrik_niv:
                 self.kot.append(float(word[1]))
             counter+=1
 
-    def fark_kontrol (self,slope_dist,zenith,a_yuk,r_yuk):
+    def fark_kontrol (self, slope_dist, zenith, a_yuk, r_yuk):
         i=0
         while i< len(self.slope_dist):
-            hor_dist =self.slope_dist[i]*(sin(self.zenith[i]/(200/pi())))
+            hor_dist =(self.slope_dist[i])*sin(self.zenith[i]*pi/200)
             self.hor_dist.append(hor_dist)
             i+=1
+        print "self.hor_dist:", self.hor_dist
+       
+       
+        i=0
+        while i < len (self.slope_dist):
+            h = self.slope_dist[i]*cos(self.zenith[i]*pi/200)
+            self.h.append(h)
+            i+=1
+        print "h:", self.h
+
+        
+
+
 
 
 if __name__=="__main__":
