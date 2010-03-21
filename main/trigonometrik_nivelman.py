@@ -4,8 +4,6 @@
 from math import *
 
 class trigonometrik_niv:
-
-
     def __init__(self):
         self.trigonometrik_log = open("../tmp/trigonometrik","r").readlines()
         self.kot_log = open("../tmp/kot","r").readlines()
@@ -69,4 +67,5 @@ class trigonometrik_niv:
             i+=1
 
 
-
+if __name__=="__main__":
+    instant = trigonometrik_niv()
