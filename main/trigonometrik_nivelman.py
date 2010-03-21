@@ -67,8 +67,7 @@ class trigonometrik_niv:
             self.hor_dist.append(hor_dist)
             i+=1
         print "self.hor_dist:", self.hor_dist
-       
-       
+
         i=0
         while i < len (self.slope_dist):
             h = self.slope_dist[i]*cos(self.zenith[i]*pi/200)
@@ -76,6 +75,14 @@ class trigonometrik_niv:
             i+=1
         print "h:", self.h
 
+        i=0
+        while i < len (self.slope_dist):
+            delta_h = self.h[i]+self.a_yuk[i]-self.r_yuk[i]+(0.068*(self.slope_dist[i]/1000))
+            self.delta_h.append(delta_h)
+            i+=1
+        print "delta_h:", self.delta_h
+
+        i=0
         
 
 
