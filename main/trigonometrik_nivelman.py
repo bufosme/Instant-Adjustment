@@ -19,12 +19,13 @@ class trigonometrik_niv:
         self.h = []
         self.delta_h = []
         self.fark = []
-        self.a = []
-        self.b = []
+        self.gidis = []
+        self.donus = []
         self.counter = 0
         self.seperator_trigonometrik(self.trigonometrik_log)
         self.seperator_kot(self.kot_log)
-        self.fark_kontrol(self.slope_dist,self.zenith,self.a_yuk,self.r_yuk)
+        self.fark_hesap(self.slope_dist,self.zenith,self.a_yuk,self.r_yuk)
+        self.fark_kontrol(self.hor_dist , self.fark)
 
     def seperator_trigonometrik(self, trigonometrik_log) :
         trigonometrik_lines = []
@@ -44,8 +45,6 @@ class trigonometrik_niv:
                 self.slope_dist.append(float(word[4]))
                 self.zenith.append(float(word[5]))
             counter+=1
-        print self.zenith
-
 
 
     def seperator_kot(self,kot_log):
@@ -63,52 +62,69 @@ class trigonometrik_niv:
                 self.kot.append(float(word[1]))
             counter+=1
 
-    def fark_kontrol (self, slope_dist, zenith, a_yuk, r_yuk):
+    def fark_hesap (self, slope_dist, zenith, a_yuk, r_yuk):
 
         i=0
         while i< len(self.slope_dist):
             hor_dist =(self.slope_dist[i])*sin(self.zenith[i]*pi/200)
             self.hor_dist.append(hor_dist)
             i+=1
-        print self.hor_dist
 
         i=0
         while i < len (self.slope_dist):
             h =( self.slope_dist[i])*cos(self.zenith[i]*pi/200)
             self.h.append(h)
             i+=1
-        print self.h
 
         i=0
         while i < len (self.slope_dist):
             delta_h =( self.h[i])+(self.a_yuk[i])-(self.r_yuk[i])+((float(0.068)*(self.slope_dist[i]/1000)**2))
             self.delta_h.append(delta_h)
             i+=1
-        print  self.delta_h
 
 
         i=0
         while i < len(self.delta_h):
             donus = self.delta_h[i]
-            self.b.append(donus)
+            self.donus.append(donus)
             i=i+2
-        print self.b
-        
+
         i=1
         while i < len(self.delta_h):
             gidis = self.delta_h[i]
-            self.a.append(gidis)
+            self.gidis.append(gidis)
             i=i+2
-        print self.a
 
 
 
         i=0
-        while i < len(self.a):
-            delta_fark= self.a[i]+self.b[i]
+        while i < len(self.gidis):
+            delta_fark= self.gidis[i]+self.donus[i]
             self.fark.append(delta_fark)
             i+=1
         print self.fark
+    
+
+    def fark_kontrol(self, hor_dist,fark):
+        i=0
+        j=0
+        while i < len(self.hor_dist):
+            print self.hor_dist[i]
+            dh = sum(self.hor_dist)*5/200
+            while j < len(self.fark):
+                # dh mm biriminde
+                if self.fark[j] > dh:
+                    print " sictin"
+                j+=1
+
+            i+=1
+        print dh
+        print sum(self.hor_dist)/2
+
+
+
+
+
 
 
 
