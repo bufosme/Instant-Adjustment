@@ -18,15 +18,21 @@ class trigonometrik_niv:
         self.delta_h = []
         self.zenith = []
         self.hor_dist = []
+        self.gidis_hor_dist = []
+        self.donus_hor_dist = []
         self.fark = []
         self.gidis = []
         self.donus = []
-        self.delat_h_ort = []
+        self.gecki_kapanma = []
+        self.ort_delta_h = []
+        self.duzeltme_h = []
+        self.duzeltilmis_h = []
         self.seperator_trigonometrik(self.trigonometrik_log)
         self.seperator_kot(self.kot_log)
         self.delta_h_fark(self.slope_dist,self.zenith,self.a_yuk,self.r_yuk)
         self.delta_h_fark_kontrol(self.fark)
-
+        self.duzeltilmis_delta_h(self.slope_dist,self.fark,self.gidis,self.donus,self.kot)
+        self.kesin_kot(self.kot,self.duzeltilmis_h)
     def seperator_trigonometrik(self, trigonometrik_log) :
         trigonometrik_lines = []
         for content in trigonometrik_log:
@@ -75,15 +81,16 @@ class trigonometrik_niv:
             delta_h =( self.h[i])+(self.a_yuk[i])-(self.r_yuk[i])+((float(0.068)*(self.slope_dist[i]/1000)**2))
             self.delta_h.append(delta_h)
             i+=1
+        print self.delta_h
 
 
-        i=0
+        i=1
         while i < len(self.delta_h):
             donus = self.delta_h[i]
             self.donus.append(donus)
             i=i+2
 
-        i=1
+        i=0
         while i < len(self.delta_h):
             gidis = self.delta_h[i]
             self.gidis.append(gidis)
@@ -105,11 +112,79 @@ class trigonometrik_niv:
         while i < len(self.fark):
             if (self.fark[i]*1000) > 30 :
                 #30mm self.fark mm biriminde
-                print "yanlıs"
+                print "yanlis"
             else:
                 print" bir sonraki adima gecilebilir"
             i+=1
         i+=1
+
+    def duzeltilmis_delta_h(self,slope_dist,fark,gidis,donus,kot):
+        i=0
+        while i < len(self.slope_dist):
+            hor_dist= (self.slope_dist[i]*sin(self.zenith[i]*pi/200))
+            self.hor_dist.append(hor_dist)
+            i+=1
+        print self.hor_dist
+
+        self.gecki_kapanma=sum(self.hor_dist)*5/200
+        print self.gecki_kapanma
+        #gecki_kapanma mm biriminde
+
+        i=0
+        while i < len(self.fark):
+            ort_delta_h=(self.gidis[i]-self.donus[i])/2
+            self.ort_delta_h.append(ort_delta_h)
+            i+=1
+        print self.ort_delta_h
+
+        fh = (sum(self.ort_delta_h)-(self.kot[1]-self.kot[0]))*100
+        #fh  cm biriminde
+        print sum(self.ort_delta_h)
+        print fh
+
+        i=0
+        while i < len(self.hor_dist):
+            gidis_hor_dist= self.hor_dist[i]
+            self.gidis_hor_dist.append(gidis_hor_dist)
+            i=i+2
+
+        i=1
+        while i < len(self.hor_dist):
+            donus_hor_dist = self.hor_dist[i]
+            self.donus_hor_dist.append(donus_hor_dist)
+            i=i+2
+
+
+
+        i=0
+        while i < len(self.ort_delta_h):
+            duzeltme_h = (-fh/(sum(self.hor_dist)/2))*((self.gidis_hor_dist[i]+self.donus_hor_dist[i])/2)/100
+            #duzeltme_h metre biriminde
+            self.duzeltme_h.append(duzeltme_h)
+            i+=1
+        print self.duzeltme_h
+
+        i=0
+        while i < len(self.duzeltme_h):
+            duzeltilmis_h = self.ort_delta_h[i]+self.duzeltme_h[i]
+            self.duzeltilmis_h.append(duzeltilmis_h)
+            i+=1
+        print self.duzeltilmis_h
+
+
+    def kesin_kot(self, kot, duzeltılmıs_h):
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
