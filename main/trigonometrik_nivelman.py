@@ -172,22 +172,6 @@ class trigonometrik_niv:
         print self.duzeltilmis_h
 
 
-    def kesin_kot(self, kot, duzeltilmis_h):
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
