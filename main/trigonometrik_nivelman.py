@@ -14,18 +14,18 @@ class trigonometrik_niv:
         self.slope_dist = []
         self.kot = []
         self.NN = []
-        self.zenith = []
-        self.hor_dist = []
         self.h = []
         self.delta_h = []
+        self.zenith = []
+        self.hor_dist = []
         self.fark = []
         self.gidis = []
         self.donus = []
-        self.counter = 0
+        self.delat_h_ort = []
         self.seperator_trigonometrik(self.trigonometrik_log)
         self.seperator_kot(self.kot_log)
-        self.fark_hesap(self.slope_dist,self.zenith,self.a_yuk,self.r_yuk)
-        self.fark_kontrol(self.hor_dist , self.fark)
+        self.delta_h_fark(self.slope_dist,self.zenith,self.a_yuk,self.r_yuk)
+        self.delta_h_fark_kontrol(self.fark)
 
     def seperator_trigonometrik(self, trigonometrik_log) :
         trigonometrik_lines = []
@@ -62,13 +62,7 @@ class trigonometrik_niv:
                 self.kot.append(float(word[1]))
             counter+=1
 
-    def fark_hesap (self, slope_dist, zenith, a_yuk, r_yuk):
-
-        i=0
-        while i< len(self.slope_dist):
-            hor_dist =(self.slope_dist[i])*sin(self.zenith[i]*pi/200)
-            self.hor_dist.append(hor_dist)
-            i+=1
+    def delta_h_fark (self, slope_dist, zenith, a_yuk, r_yuk):
 
         i=0
         while i < len (self.slope_dist):
@@ -105,21 +99,18 @@ class trigonometrik_niv:
         print self.fark
     
 
-    def fark_kontrol(self, hor_dist,fark):
-        i=0
-        j=0
-        while i < len(self.hor_dist):
-            print self.hor_dist[i]
-            dh = sum(self.hor_dist)*5/200
-            while j < len(self.fark):
-                # dh mm biriminde
-                if self.fark[j] > dh:
-                    print " sictin"
-                j+=1
+    def delta_h_fark_kontrol(self, fark):
 
+        i=0
+        while i < len(self.fark):
+            if (self.fark[i]*1000) > 30 :
+                #30mm self.fark mm biriminde
+                print "yanlıs"
+            else:
+                print" bir sonraki adima gecilebilir"
             i+=1
-        print dh
-        print sum(self.hor_dist)/2
+        i+=1
+
 
 
 
