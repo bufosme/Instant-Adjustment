@@ -27,12 +27,14 @@ class trigonometrik_niv:
         self.ort_delta_h = []
         self.duzeltme_h = []
         self.duzeltilmis_h = []
+        self.kot_bilinmeyen = []
         self.seperator_trigonometrik(self.trigonometrik_log)
         self.seperator_kot(self.kot_log)
         self.delta_h_fark(self.slope_dist,self.zenith,self.a_yuk,self.r_yuk)
         self.delta_h_fark_kontrol(self.fark)
         self.duzeltilmis_delta_h(self.slope_dist,self.fark,self.gidis,self.donus,self.kot)
-        self.kesin_kot(self.kot,self.duzeltilmis_h)
+        self.kesin_kot_hesabi(self.kot,self.duzeltilmis_h)
+        self.printer()
     def seperator_trigonometrik(self, trigonometrik_log) :
         trigonometrik_lines = []
         for content in trigonometrik_log:
@@ -81,7 +83,7 @@ class trigonometrik_niv:
             delta_h =( self.h[i])+(self.a_yuk[i])-(self.r_yuk[i])+((float(0.068)*(self.slope_dist[i]/1000)**2))
             self.delta_h.append(delta_h)
             i+=1
-        print self.delta_h
+        
 
 
         i=1
@@ -103,7 +105,7 @@ class trigonometrik_niv:
             delta_fark= self.gidis[i]+self.donus[i]
             self.fark.append(delta_fark)
             i+=1
-        print self.fark
+        
     
 
     def delta_h_fark_kontrol(self, fark):
@@ -119,15 +121,16 @@ class trigonometrik_niv:
         i+=1
 
     def duzeltilmis_delta_h(self,slope_dist,fark,gidis,donus,kot):
+        global fh
         i=0
         while i < len(self.slope_dist):
             hor_dist= (self.slope_dist[i]*sin(self.zenith[i]*pi/200))
             self.hor_dist.append(hor_dist)
             i+=1
-        print self.hor_dist
+
 
         self.gecki_kapanma=sum(self.hor_dist)*5/200
-        print self.gecki_kapanma
+        
         #gecki_kapanma mm biriminde
 
         i=0
@@ -135,12 +138,12 @@ class trigonometrik_niv:
             ort_delta_h=(self.gidis[i]-self.donus[i])/2
             self.ort_delta_h.append(ort_delta_h)
             i+=1
-        print self.ort_delta_h
+        
 
         fh = (sum(self.ort_delta_h)-(self.kot[1]-self.kot[0]))*100
         #fh  cm biriminde
-        print sum(self.ort_delta_h)
-        print fh
+        
+        
 
         i=0
         while i < len(self.hor_dist):
@@ -162,14 +165,51 @@ class trigonometrik_niv:
             #duzeltme_h metre biriminde
             self.duzeltme_h.append(duzeltme_h)
             i+=1
-        print self.duzeltme_h
+        
 
         i=0
         while i < len(self.duzeltme_h):
             duzeltilmis_h = self.ort_delta_h[i]+self.duzeltme_h[i]
             self.duzeltilmis_h.append(duzeltilmis_h)
             i+=1
-        print self.duzeltilmis_h
+        
+
+    def kesin_kot_hesabi(self,kot,duzeltilmis_h):
+
+        i=0
+        kot_bilinmeyen = self.kot[0]
+        
+        while i < len (self.duzeltilmis_h):
+            kot_bilinmeyen = kot_bilinmeyen + self.duzeltilmis_h[i]
+            self.kot_bilinmeyen.append(kot_bilinmeyen)
+            i+=1
+
+        
+
+    def printer(self):
+
+
+
+        print "fh = %.3f cm "%(fh)
+        print "gecki_kapanma = %.3f mm\n"%(self.gecki_kapanma)
+
+
+        i=0
+        j=0
+
+        while i < len (self.duzeltilmis_h):
+            print " DN = %s BN=%s delta_h_gidis=%.3f delta_h_donus= %.3f ort_delta_h = %.3f duzeltilmis_h = %.3f" % (self.DN[i], self.BN[i],self.gidis[i],self.donus[i],self.ort_delta_h[i],self.duzeltilmis_h[i])
+            i+=1
+
+
+        print "\n"
+
+        while j < len(self.duzeltilmis_h):
+            print "NN = %s  ortometrik_yukseklik = %.3f"%(self.DN[j],self.kot_bilinmeyen[j])
+            j+=1
+
+
+        
 
 
 
